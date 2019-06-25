@@ -8,25 +8,41 @@ var moment = require("moment");
 moment().format();
 
 var command = process.argv[2];
+var searchTerm = process.argv.slice(3);
 
 function getSong() {
-    var track = process.argv.slice(3).join(" ");
 
-    spotify.search({ type: "track", query: track, limit: 1}, function(err, data) {
-        if (err) {
-          return console.log('Error occurred: ' + err);
-        }
-       
-      console.log(`Artist: ${data.tracks.items[0].album.artists[0].name}`);
-      // console log  song's name
-      // console log  preview link of the song from Spotify
-      console.log(`Album: ${data.tracks.items[0].album.name}`);  
-      });
+    if (process.argv.length >= 4 || process.argv[2] == "do-what-it-says") { 
+
+        spotify.search({ type: "track", query: searchTerm, limit: 1}, function(err, data) {
+            if (err) {
+            return console.log('Error occurred: ' + err);
+            }
+        
+        console.log(`\nArtist: ${data.tracks.items[0].artists[0].name}`);
+        console.log(`\nSong: ${data.tracks.items[0].name}`);
+        console.log(`\nLink to song: ${data.tracks.items[0].href}`);
+        console.log(`\nAlbum: ${data.tracks.items[0].album.name}\n`);  
+        });
+    } else {
+
+        spotify.search({ type: "track", query: "The Sign"}, function(err, data) {
+            if (err) {
+              return console.log('Error occurred: ' + err);
+            }
+        
+        console.log(`\nYou forgot to enter a song name, so here's some info on ${data.tracks.items[5].name} by ${data.tracks.items[5].artists[0].name}:`);
+        console.log(`\nArtist: ${data.tracks.items[5].artists[0].name}`);
+        console.log(`\nSong: ${data.tracks.items[5].name}`);
+        console.log(`\nLink to song: ${data.tracks.items[5].href}`);
+        console.log(`\nAlbum: ${data.tracks.items[5].album.name}\n`); 
+        });
+    }
 };
 
 function getMovie() {
-    var movieTitle = process.argv.slice(3).join("+");
-    var queryUrl = "http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=short&apikey=trilogy"
+
+    var queryUrl = "http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&apikey=trilogy"
 
     if (process.argv.length >= 4) { 
 
@@ -78,8 +94,8 @@ function getMovie() {
 
 
 function getConcert() {
-    var artist = process.argv.slice(3).join("+");
-    var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+    searchTerm = process.argv.slice(3).join("+");
+    var queryUrl = "https://rest.bandsintown.com/artists/" + searchTerm + "/events?app_id=codingbootcamp";
 
     if (process.argv.length >= 4) { 
 
@@ -89,7 +105,7 @@ function getConcert() {
                 console.log("\nSorry, there are no upcoming shows for this artist.\n");
 
             } else {
-                console.log(`\nYou searched for ${process.argv.slice(3).join(" ")}. Here are some upcoming shows:`);
+                console.log(`\nYou searched for ${searchTerm}. Here are some upcoming shows:`);
 
                 for (var i = 0; i < response.data.length; i++) {
                     var concertDate = response.data[i].datetime.split("T").slice(0,1);
@@ -136,26 +152,23 @@ function readTxt() {
         }
             
         var array = data.split(",");
-        var command = array[0];
-        var track = array[1];
-    
-        console.log(`\n ${command}`);
-        console.log(`\n${track}\n`);
-      
-        getSong(track);
-      
-      });
+        command = array[0];
+        searchTerm = array[1].split('"').join("");
+
+        getSong(searchTerm);
+
+    });
 };
 
 switch(command) {
     case "movie-this": 
-        return getMovie();
+        return getMovie(searchTerm);
     case "concert-this": 
-        return getConcert();
+        return getConcert(searchTerm);
     case "spotify-this-song": 
-        return getSong();
+        return getSong(searchTerm);
     case "do-what-it-says": 
-        return readTxt();
+        return readTxt(searchTerm);
     default:
         console.log("Choose a valid action.");
         return false;
