@@ -12,12 +12,15 @@ var command = process.argv[2];
 function getSong() {
     var track = process.argv.slice(3).join(" ");
 
-    spotify.search({ type: 'track', query: track, limit: 1}, function(err, data) {
+    spotify.search({ type: "track", query: track, limit: 1}, function(err, data) {
         if (err) {
           return console.log('Error occurred: ' + err);
         }
        
-      console.log(data.tracks.items[0]); 
+      console.log(`Artist: ${data.tracks.items[0].album.artists[0].name}`);
+      // console log  song's name
+      // console log  preview link of the song from Spotify
+      console.log(`Album: ${data.tracks.items[0].album.name}`);  
       });
 };
 
