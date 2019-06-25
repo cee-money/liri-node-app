@@ -11,14 +11,14 @@ var command = process.argv[2];
 
 function getSong() {
     var track = process.argv.slice(3).join(" ");
-    console.log(track);
-    
-    spotify.search({ type: "track", query: track, limit: 5})
-    .then(function(response) {
-        console.log(response);
-    }).catch(function(err) {
-        console.log(err);
-    });
+
+    spotify.search({ type: 'track', query: track, limit: 1}, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        }
+       
+      console.log(data.tracks.items[0]); 
+      });
 };
 
 function getMovie() {
