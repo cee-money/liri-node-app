@@ -2,7 +2,13 @@
   "name": "liri-node-app",
   "version": "1.0.0",
   "description": "Deployed version: https://cee-money.github.io/liri-node-app/",
-  "main": "index.js",
+  "main": "keys.js",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "moment": "^2.24.0",
+    "node-spotify-api": "^1.1.1"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/cee-money/liri-node-app.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Carolyn Moneymaker",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/cee-money/liri-node-app/issues"
