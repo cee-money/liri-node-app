@@ -9,7 +9,6 @@ moment().format();
 var fs = require("fs");
 
 var command = process.argv[2];
-var searchName = process.argv.slice(3).join(" ");
 
 function getSong() {
     // var song = process.argv.slice(3).join(" ");
@@ -24,7 +23,7 @@ function getMovie() {
     if (process.argv.length >= 4) { 
 
         axios.get(queryUrl).then(function(response) {
-            console.log(`\nYou searched for ${response.data.Title.toUpperCase()}. Here are some facts about it:`);
+            console.log(`\nYou searched for ${response.data.Title}. Here are some facts about it:`);
             console.log(`\nReleased in: ${response.data.Year}`);
             console.log(`\nIMDB rating: ${response.data.Ratings[0].Value}`);
             console.log(`\nRotten Tomatoes rating: ${response.data.Ratings[1].Value}`);
@@ -57,7 +56,7 @@ function getMovie() {
         var queryUrl = "http://www.omdbapi.com/?t=mr+nobody&y=&plot=short&apikey=trilogy";
 
         axios.get(queryUrl).then(function(response) {
-            console.log(`\nYou forgot to enter a movie title, so here's some info on ${response.data.Title.toUpperCase()}:`);
+            console.log(`\nYou forgot to enter a movie title, so here's some info on ${response.data.Title}:`);
             console.log(`\nReleased in: ${response.data.Year}`);
             console.log(`\nIMDB rating: ${response.data.Ratings[0].Value}`);
             console.log(`\nRotten Tomatoes rating: ${response.data.Ratings[1].Value}`);
@@ -82,7 +81,7 @@ function getConcert() {
                 console.log("\nSorry, there are no upcoming shows for this artist.\n");
 
             } else {
-                console.log(`\nYou searched for ${process.argv.slice(3).join(" ").toUpperCase()}. Here are some upcoming shows:`);
+                console.log(`\nYou searched for ${process.argv.slice(3).join(" ")}. Here are some upcoming shows:`);
 
                 for (var i = 0; i < response.data.length; i++) {
                     var concertDate = response.data[i].datetime.split("T").slice(0,1);
@@ -142,11 +141,11 @@ function readTxt() {
 
 switch(command) {
     case "movie-this": 
-        return getMovie(searchName);
+        return getMovie();
     case "concert-this": 
-        return getConcert(searchName);
+        return getConcert();
     case "spotify-this-song": 
-        return getSong(searchName);
+        return getSong();
     case "do-what-it-says": 
         return readTxt();
     default:
