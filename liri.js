@@ -1,19 +1,24 @@
-// require("dotenv").config();
-// var keys = require("./keys.js");
-// var spotify = new Spotify(keys.spotify);
-
+require("dotenv").config();
+var fs = require("fs");
+var Spotify = require('node-spotify-api');
+var keys = require("./keys.js");
+var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 var moment = require("moment");
 moment().format();
 
-var fs = require("fs");
-
 var command = process.argv[2];
 
 function getSong() {
-    // var song = process.argv.slice(3).join(" ");
-    // var queryUrl = " ";
-    console.log("You did it!");
+    var track = process.argv.slice(3).join(" ");
+    console.log(track);
+    
+    spotify.search({ type: "track", query: track, limit: 5})
+    .then(function(response) {
+        console.log(response);
+    }).catch(function(err) {
+        console.log(err);
+    });
 };
 
 function getMovie() {
@@ -129,12 +134,12 @@ function readTxt() {
             
         var array = data.split(",");
         var command = array[0];
-        var songTitle = array[1];
+        var track = array[1];
     
         console.log(`\n ${command}`);
-        console.log(`\n${songTitle}\n`);
+        console.log(`\n${track}\n`);
       
-        getSong(songTitle);
+        getSong(track);
       
       });
 };
