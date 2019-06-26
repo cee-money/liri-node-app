@@ -1,3 +1,5 @@
+
+
 // Storing Spotify keys in a hidden file
 require("dotenv").config();
 
@@ -113,7 +115,7 @@ function getConcert() {
 
             if (response.data.length == 0) {
 
-                renderInfo = `\nSorry, there are no upcoming shows for ${searchTerm}.`;
+                renderInfo = `\nSorry, there are no upcoming shows for ${searchTerm}.\n\n------------------------\n`;
 
                 console.log(renderInfo);
 
@@ -219,7 +221,7 @@ switch(command) {
     case "do-what-it-says": 
         return readTxt(searchTerm);
     default:
-        console.log("Choose a valid action.");
+        console.log(`\nChoose a valid action.\n\n------------------------\n`);
         return false;
 };
 
